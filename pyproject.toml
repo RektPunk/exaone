@@ -1,0 +1,20 @@
+[project]
+name = "exaone"
+version = "0.1.0"
+description = "Unofficial Python client for the EXAONE API Platform"
+readme = "README.md"
+authors = [{ name = "RektPunk", email = "rektpunk@gmail.com" }]
+requires-python = ">=3.11"
+dependencies = ["httpx2>=2.16.0", "pydantic>=2.14.3"]
+
+[project.scripts]
+exaone = "exaone:main"
+
+[build-system]
+requires = ["uv_build>=0.13.6,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
