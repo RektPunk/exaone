@@ -3,7 +3,7 @@ from io import BytesIO
 from exaone.tabular.multipart import open_tabular_files
 
 
-def test_open_tabular_files_uses_paths_and_closes_owned_handles(tmp_path):
+def test_open_tabular_files_uses_paths_and_closes_owned_handles(tmp_path) -> None:
     train_path = tmp_path / "train.csv"
     test_path = tmp_path / "test.csv"
     train_path.write_bytes(b"target\n1\n")
@@ -18,7 +18,7 @@ def test_open_tabular_files_uses_paths_and_closes_owned_handles(tmp_path):
     assert train_handle.closed
 
 
-def test_open_tabular_files_does_not_close_caller_owned_objects():
+def test_open_tabular_files_does_not_close_caller_owned_objects() -> None:
     train = BytesIO(b"target\n1\n")
     test = BytesIO(b"target\n")
 

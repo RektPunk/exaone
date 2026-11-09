@@ -1,13 +1,11 @@
-"""Python client for the EXAONE API."""
-
-from .client import AsyncExaone, Exaone
-from .exceptions import (
+from exaone.client import AsyncExaone, Exaone
+from exaone.exceptions import (
     ExaoneAPIError,
     ExaoneError,
     ExaoneResponseError,
     ExaoneTabularError,
 )
-from .tabular.models import (
+from exaone.tabular.models import (
     ClassificationData,
     ClassificationRequest,
     ClassificationResponse,

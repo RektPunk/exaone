@@ -3,8 +3,8 @@ from typing import Self
 
 import httpx2
 
-from .tabular import AsyncTabularService, TabularService
-from .tabular.models import (
+from exaone.tabular import AsyncTabularService, TabularService
+from exaone.tabular.models import (
     ClassificationRequest,
     ClassificationResponse,
     RegressionRequest,
@@ -12,26 +12,25 @@ from .tabular.models import (
     TabularFile,
 )
 
-DEFAULT_BASE_URL = "https://api.exaone.ai/v1"
+BASE_URL = "https://api.exaone.ai/v1"
 
 
 def _resolve_api_key(api_key: str | None) -> str:
     resolved = api_key or os.getenv("EXAONE_API_KEY")
     if not resolved:
-        raise ValueError(
-            "API key is required. Pass api_key or set the EXAONE_API_KEY environment variable."
-        )
+        msg = "API key is required. Pass api_key or set the EXAONE_API_KEY environment variable."
+        raise ValueError(msg)
     return resolved
 
 
 class Exaone:
-    """Synchronous EXAONE client with ``chat`` and ``tabular`` services."""
+    """Synchronous EXAONE client."""
 
     def __init__(
         self,
         api_key: str | None = None,
         *,
-        base_url: str = DEFAULT_BASE_URL,
+        base_url: str = BASE_URL,
         timeout: float | httpx2.Timeout = 60.0,
         http_client: httpx2.Client | None = None,
     ) -> None:
@@ -44,7 +43,9 @@ class Exaone:
             headers={"Authorization": f"Bearer {self._api_key}"},
         )
         self.tabular = TabularService(
-            self._client, api_key=self._api_key, base_url=self._base_url
+            client=self._client,
+            api_key=self._api_key,
+            base_url=self._base_url,
         )
 
     def close(self) -> None:
@@ -75,13 +76,13 @@ class Exaone:
 
 
 class AsyncExaone:
-    """Asynchronous EXAONE client with ``chat`` and ``tabular`` services."""
+    """Asynchronous EXAONE client."""
 
     def __init__(
         self,
         api_key: str | None = None,
         *,
-        base_url: str = DEFAULT_BASE_URL,
+        base_url: str = BASE_URL,
         timeout: float | httpx2.Timeout = 60.0,
         http_client: httpx2.AsyncClient | None = None,
     ) -> None:
@@ -94,7 +95,9 @@ class AsyncExaone:
             headers={"Authorization": f"Bearer {self._api_key}"},
         )
         self.tabular = AsyncTabularService(
-            self._client, api_key=self._api_key, base_url=self._base_url
+            self._client,
+            api_key=self._api_key,
+            base_url=self._base_url,
         )
 
     async def close(self) -> None:

@@ -1,1 +1,0 @@
-"""Tabular service tests."""

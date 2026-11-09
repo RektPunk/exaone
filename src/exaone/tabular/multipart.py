@@ -1,14 +1,10 @@
-"""File handling helpers for Tabular multipart requests."""
-
-from __future__ import annotations
-
 from collections.abc import Generator
 from contextlib import ExitStack, contextmanager
 from os import PathLike
 from pathlib import Path
 from typing import BinaryIO
 
-from .models import TabularFile
+from exaone.tabular.models import TabularFile
 
 
 @contextmanager
@@ -36,7 +32,8 @@ def _multipart_file(
         return path.name, handle, "text/csv"
 
     if not hasattr(source, "read"):
-        raise TypeError("Tabular files must be paths or binary file objects")
+        msg = "Tabular files must be paths or binary file objects"
+        raise TypeError(msg)
 
     name = getattr(source, "name", default_name)
     filename = Path(str(name)).name if name else default_name

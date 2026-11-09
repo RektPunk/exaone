@@ -1,5 +1,3 @@
-"""Tabular classification and regression services."""
-
-from .service import AsyncTabularService, TabularService
+from exaone.tabular.service import AsyncTabularService, TabularService
 
 __all__ = ["AsyncTabularService", "TabularService"]

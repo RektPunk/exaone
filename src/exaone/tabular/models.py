@@ -7,13 +7,13 @@ TabularFile = str | PathLike[str] | BinaryIO
 
 
 class _TabularRequest(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    mode: str = "default"
     target_columns: list[str] = Field(
         default_factory=lambda: ["target"],
         min_length=1,
         max_length=1,
     )
-    mode: str = "default"
+    model_config = ConfigDict(extra="forbid")
 
 
 class ClassificationRequest(_TabularRequest):

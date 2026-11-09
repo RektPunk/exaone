@@ -9,7 +9,7 @@ from exaone.tabular.response import (
 )
 
 
-def test_parse_classification_response():
+def test_parse_classification_response() -> None:
     result = parse_classification_response(
         httpx2.Response(
             200,
@@ -23,7 +23,7 @@ def test_parse_classification_response():
                     "probabilities": None,
                 },
             },
-        )
+        ),
     )
 
     assert isinstance(result, ClassificationResponse)
@@ -31,7 +31,7 @@ def test_parse_classification_response():
     assert result.data.labels == [["yes"]]
 
 
-def test_parse_regression_full_response():
+def test_parse_regression_full_response() -> None:
     result = parse_regression_response(
         httpx2.Response(
             200,
@@ -45,7 +45,7 @@ def test_parse_regression_full_response():
                     "quantile_levels": [[0.1, 0.9]],
                 },
             },
-        )
+        ),
     )
 
     assert isinstance(result, RegressionResponse)
@@ -54,8 +54,9 @@ def test_parse_regression_full_response():
 
 
 @pytest.mark.parametrize(
-    "parser", [parse_classification_response, parse_regression_response]
+    "parser",
+    [parse_classification_response, parse_regression_response],
 )
-def test_parse_invalid_tabular_response(parser):
+def test_parse_invalid_tabular_response(parser) -> None:
     with pytest.raises(ExaoneResponseError):
         parser(httpx2.Response(200, json={"not": "a response"}))

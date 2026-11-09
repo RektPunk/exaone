@@ -1,19 +1,18 @@
-"""Synchronous and asynchronous Tabular endpoints."""
-
-from __future__ import annotations
-
 import httpx2
 
-from ..exceptions import raise_for_api_error, raise_for_tabular_error
-from .models import (
+from exaone.exceptions import raise_for_api_error, raise_for_tabular_error
+from exaone.tabular.models import (
     ClassificationRequest,
     ClassificationResponse,
     RegressionRequest,
     RegressionResponse,
     TabularFile,
 )
-from .multipart import open_tabular_files
-from .response import parse_classification_response, parse_regression_response
+from exaone.tabular.multipart import open_tabular_files
+from exaone.tabular.response import (
+    parse_classification_response,
+    parse_regression_response,
+)
 
 
 def _form_fields(request: ClassificationRequest | RegressionRequest) -> dict[str, str]:
@@ -46,7 +45,8 @@ class TabularService:
                 files=files,
                 headers={"Authorization": f"Bearer {self._api_key}"},
             )
-        raise_for_api_error(response)
+            raise_for_api_error(response)
+
         result = parse_classification_response(response)
         raise_for_tabular_error(result.result_code, result.description)
         return result
@@ -65,7 +65,8 @@ class TabularService:
                 files=files,
                 headers={"Authorization": f"Bearer {self._api_key}"},
             )
-        raise_for_api_error(response)
+            raise_for_api_error(response)
+
         result = parse_regression_response(response)
         raise_for_tabular_error(result.result_code, result.description)
         return result
@@ -75,7 +76,11 @@ class AsyncTabularService:
     """Asynchronous Tabular classification and regression API."""
 
     def __init__(
-        self, client: httpx2.AsyncClient, *, api_key: str, base_url: str
+        self,
+        client: httpx2.AsyncClient,
+        *,
+        api_key: str,
+        base_url: str,
     ) -> None:
         self._client = client
         self._api_key = api_key
@@ -95,7 +100,8 @@ class AsyncTabularService:
                 files=files,
                 headers={"Authorization": f"Bearer {self._api_key}"},
             )
-        raise_for_api_error(response)
+            raise_for_api_error(response)
+
         result = parse_classification_response(response)
         raise_for_tabular_error(result.result_code, result.description)
         return result
@@ -114,7 +120,8 @@ class AsyncTabularService:
                 files=files,
                 headers={"Authorization": f"Bearer {self._api_key}"},
             )
-        raise_for_api_error(response)
+            raise_for_api_error(response)
+
         result = parse_regression_response(response)
         raise_for_tabular_error(result.result_code, result.description)
         return result

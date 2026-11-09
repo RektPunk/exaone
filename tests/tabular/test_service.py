@@ -4,14 +4,13 @@ from io import BytesIO
 import httpx2
 import pytest
 
+from exaone.client import BASE_URL
 from exaone.exceptions import ExaoneTabularError
 from exaone.tabular.models import ClassificationRequest, RegressionRequest
 from exaone.tabular.service import AsyncTabularService, TabularService
 
-BASE_URL = "https://api.exaone.ai/v1"
 
-
-def test_sync_tabular_classification_multipart():
+def test_sync_tabular_classification_multipart() -> None:
     def handler(request):
         assert request.url.path == "/v1/tabular/classification"
         assert request.headers["authorization"] == "Bearer test-key"
@@ -19,7 +18,8 @@ def test_sync_tabular_classification_multipart():
         body = request.content.decode()
         assert 'name="train_file"; filename="train.csv"' in body
         assert 'name="test_file"; filename="test.csv"' in body
-        assert 'name="target_columns"' in body and "churn" in body
+        assert 'name="target_columns"' in body
+        assert "churn" in body
         return httpx2.Response(
             200,
             json={
@@ -46,7 +46,7 @@ def test_sync_tabular_classification_multipart():
     assert result.data.labels == [["yes"]]
 
 
-def test_async_tabular_regression_and_result_error():
+def test_async_tabular_regression_and_result_error() -> None:
     async def run():
         count = 0
 
@@ -73,12 +73,14 @@ def test_async_tabular_regression_and_result_error():
             )
 
         async with httpx2.AsyncClient(
-            transport=httpx2.MockTransport(handler)
+            transport=httpx2.MockTransport(handler),
         ) as client:
             service = AsyncTabularService(client, api_key="test-key", base_url=BASE_URL)
             request = RegressionRequest(target_columns=["price"])
             first = await service.regress(
-                BytesIO(b"price\n42\n"), BytesIO(b"\n"), request
+                BytesIO(b"price\n42\n"),
+                BytesIO(b"\n"),
+                request,
             )
             with pytest.raises(ExaoneTabularError, match="bad csv"):
                 await service.regress(BytesIO(b"price\n42\n"), BytesIO(b"\n"), request)
