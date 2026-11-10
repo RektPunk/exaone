@@ -29,25 +29,23 @@ class ChatTemplateKwargs(_ChatRequest):
 class ChatCompletionRequest(_ChatRequest):
     """Parameters for a Chat Completions request."""
 
-    """Parameters for a Chat Completions API request."""
-
     model: str = "k-exaone_v2.5"
     messages: list[ChatMessageRequest] = Field(min_length=1)
     max_tokens: int | None = Field(default=None, gt=0)
     stream: bool = False
     stream_options: StreamOptions | None = None
-    temperature: float | None = Field(default=None, ge=0)
-    top_p: float | None = Field(default=None, ge=0, le=1)
-    top_k: int | None = None
-    presence_penalty: float | None = Field(default=None, ge=-2, le=2)
-    reasoning_effort: Literal["low", "high", "max"] | None = None
+    temperature: float = Field(default=1.0, ge=0)
+    top_p: float = Field(default=0.95, ge=0, le=1)
+    top_k: int = Field(default=-1, ge=-1)
+    presence_penalty: float = Field(default=0.0, ge=-2, le=2)
+    reasoning_effort: Literal["low", "high", "max"] = "max"
     chat_template_kwargs: ChatTemplateKwargs | None = None
 
     @field_validator("top_k")
     @classmethod
-    def validate_top_k(cls, value: int | None) -> int | None:
+    def validate_top_k(cls, value: int) -> int:
         """Allow only ``-1`` or a positive value for ``top_k``."""
-        if value is not None and value != -1 and value < 1:
+        if value != -1 and value < 1:
             msg = "top_k must be -1 or a positive integer"
             raise ValueError(msg)
         return value
