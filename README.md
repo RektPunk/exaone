@@ -1,11 +1,9 @@
 # exaone
 
-An unofficial Python wrapper for the EXAONE API Platform. This project is not affiliated with or endorsed by LG AI Research.
-
-Provides synchronous and asynchronous Chat Completions, streaming, and Tabular classification and regression.
+An unofficial Python client for the [EXAONE API Platform](https://docs.exaone.ai/en/docs/overview), with sync and async access to its endpoints.
 
 > [!CAUTION]
-> EXAONE API use is subject to the [EXAONE API Platform Terms of Service](https://docs.exaone.ai/ko/terms/terms-of-service). The terms limit API and model use to non-commercial purposes. They prohibit commercial use of the model or its outputs, and integration into a product or service that lets third parties call the model or submit inputs. Check the terms before using this wrapper.
+> This project is not affiliated with or endorsed by LG AI Research. EXAONE API use is subject to the [EXAONE API Platform Terms of Service](https://docs.exaone.ai/ko/terms/terms-of-service). The terms limit API and model use to non-commercial purposes. They prohibit commercial use of the model or its outputs, and integration into a product or service that lets third parties call the model or submit inputs. Check the terms before using this client.
 
 ## Install
 
@@ -17,7 +15,7 @@ pip install git+https://github.com/RektPunk/exaone.git
 
 ## Set your API key
 
-The wrapper reads `EXAONE_API_KEY` from the process environment. It does not load `.env` files itself.
+The client reads `EXAONE_API_KEY` from the process environment. It does not load `.env` files itself.
 
 ```bash
 # macOS / Linux
@@ -78,7 +76,7 @@ asyncio.run(async_examples())
 
 ## Tabular prediction
 
-Pass a training CSV that includes the target column and a test CSV containing the feature columns for rows to predict. Leave the target column out of the test CSV.
+Pass a training CSV with the target column and a test CSV containing only the feature columns for prediction.
 
 ```python
 from exaone import ClassificationRequest, Exaone, RegressionRequest
