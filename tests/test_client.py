@@ -4,6 +4,7 @@ import httpx2
 import pytest
 
 from exaone import AsyncExaone, Exaone
+from exaone.chat.service import AsyncChatService, ChatService
 from exaone.tabular.service import AsyncTabularService, TabularService
 
 
@@ -11,6 +12,7 @@ def test_client_reads_api_key_from_environment(monkeypatch) -> None:
     monkeypatch.setenv("EXAONE_API_KEY", "test-key")
     client = Exaone()
 
+    assert isinstance(client.chat, ChatService)
     assert isinstance(client.tabular, TabularService)
     client.close()
 
@@ -40,6 +42,7 @@ def test_async_client_services_and_owned_transport_close() -> None:
         client = AsyncExaone("test-key")
         transport = client._client
 
+        assert isinstance(client.chat, AsyncChatService)
         assert isinstance(client.tabular, AsyncTabularService)
         await client.close()
         assert transport.is_closed
