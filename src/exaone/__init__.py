@@ -1,3 +1,12 @@
+from exaone.chat.models import (
+    ChatCompletionChunkResponse,
+    ChatCompletionRequest,
+    ChatCompletionResponse,
+    ChatMessageRequest,
+    ChatMessageResponse,
+    StreamOptions,
+    Usage,
+)
 from exaone.client import AsyncExaone, Exaone
 from exaone.exceptions import (
     ExaoneAPIError,
@@ -17,6 +26,11 @@ from exaone.tabular.models import (
 
 __all__ = [
     "AsyncExaone",
+    "ChatCompletionChunkResponse",
+    "ChatCompletionRequest",
+    "ChatCompletionResponse",
+    "ChatMessageRequest",
+    "ChatMessageResponse",
     "ClassificationData",
     "ClassificationRequest",
     "ClassificationResponse",
@@ -28,5 +42,7 @@ __all__ = [
     "RegressionData",
     "RegressionRequest",
     "RegressionResponse",
+    "StreamOptions",
     "TabularFile",
+    "Usage",
 ]

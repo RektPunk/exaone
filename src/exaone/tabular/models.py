@@ -17,18 +17,22 @@ class _TabularRequest(BaseModel):
 
 
 class ClassificationRequest(_TabularRequest):
+    """Options for classifying rows in a CSV file."""
+
     output_type: Literal["class", "probability"] = "class"
 
 
 class RegressionRequest(_TabularRequest):
+    """Options for predicting numeric values from a CSV file."""
+
     output_type: Literal["point", "full"] = "point"
 
 
-class _TabularResponseModel(BaseModel):
+class _TabularResponse(BaseModel):
     model_config = ConfigDict(extra="allow")
 
 
-class ClassificationData(_TabularResponseModel):
+class ClassificationData(_TabularResponse):
     """Labels, classes, or probabilities returned for classification rows."""
 
     target_columns: list[str] = Field(default_factory=list)
@@ -37,7 +41,7 @@ class ClassificationData(_TabularResponseModel):
     probabilities: list[list[list[float]]] | None = None
 
 
-class ClassificationResponse(_TabularResponseModel):
+class ClassificationResponse(_TabularResponse):
     """Complete response from the Tabular classification endpoint."""
 
     result_code: int
@@ -45,7 +49,7 @@ class ClassificationResponse(_TabularResponseModel):
     data: ClassificationData | None = None
 
 
-class RegressionData(_TabularResponseModel):
+class RegressionData(_TabularResponse):
     """Point predictions or quantile distributions for regression rows."""
 
     target_columns: list[str] = Field(default_factory=list)
@@ -54,7 +58,7 @@ class RegressionData(_TabularResponseModel):
     quantile_levels: list[list[float]] | None = None
 
 
-class RegressionResponse(_TabularResponseModel):
+class RegressionResponse(_TabularResponse):
     """Complete response from the Tabular regression endpoint."""
 
     result_code: int
