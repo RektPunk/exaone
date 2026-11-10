@@ -4,6 +4,12 @@ from typing import Any, Self
 
 import httpx2
 
+from exaone.chat import AsyncChatService, ChatService
+from exaone.chat.models import (
+    ChatCompletionChunkResponse,
+    ChatCompletionRequest,
+    ChatCompletionResponse,
+)
 from exaone.tabular import AsyncTabularService, TabularService
 from exaone.tabular.models import (
     ClassificationRequest,
@@ -11,13 +17,6 @@ from exaone.tabular.models import (
     RegressionRequest,
     RegressionResponse,
     TabularFile,
-)
-
-from .chat import AsyncChatService, ChatService
-from .chat.models import (
-    ChatCompletionChunkResponse,
-    ChatCompletionRequest,
-    ChatCompletionResponse,
 )
 
 BASE_URL = "https://api.exaone.ai/v1"
